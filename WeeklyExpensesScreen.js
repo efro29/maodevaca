@@ -108,7 +108,14 @@ const WeeklyExpensesScreen = () => {
   }, []);
 
 
+  const handleClose = () =>{
 
+            setName('');
+              setBirthdate('');
+              setInputValue('');
+              setModalVisible(false);
+              setMeta(0)
+  }
 
   const handleInputChange = (text) => {
     // Atualiza o valor digitado
@@ -380,7 +387,9 @@ const renderClientCard = ({ item }) => {
               setEditingClient(item);
               setName(item.name);
               setBirthdate(item.birthdate);
+              setInputValue(item.mensalDinheiro);
               setModalVisible(true);
+              setMeta(item.meta)
             }}
           >
             <MaterialIcons name="edit" size={24} color="#fff" />
@@ -483,27 +492,29 @@ const renderClientCard = ({ item }) => {
             style={styles.modalInput}
             />
 
-          <TextInput
-              readOnly
-            placeholder="Renda Mensal"
-            value={'Meta Diária : R$'+meta.toFixed(2)}
-            keyboardType="numeric"
-            style={styles.modalInput}
-            />
-
-       
+     
 
             {/* Campo Data de Aniversário com máscara */}
             <TextInput
-              placeholder="Digite a data de aniversário (DD/MM/AAAA)"
+              placeholder="Data de Aniversário"
               value={birthdate}
               onChangeText={(text) => setBirthdate(formatDate(text))}
               style={styles.modalInput}
               keyboardType="numeric"
             />
 
+            <TextInput
+            readOnly
+            placeholder="Renda Mensal"
+            value={'Meta Diária : R$'+meta.toFixed(2)}
+            keyboardType="numeric"
+            style={styles.modalInputMeta}
+            />
+
+       
+
             <View style={styles.modalButtons}>
-              <Button title="Cancelar" onPress={() => setModalVisible(false)} color="#888" />
+              <Button title="Cancelar" onPress={() => handleClose()} color="#888" />
               <Button
                 title={editingClient ? 'Salvar Alterações' : 'Adicionar'}
                 onPress={editingClient ? handleEditClient : handleAddClient}
@@ -637,9 +648,20 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     fontSize: 16,
   },
+  modalInputMeta: {
+    width: '100%',
+    padding: 10,
+    borderWidth: 1,
+    borderColor: '#ddd',
+    backgroundColor:'silver',
+    color:'purple',fontWeight:'bold',
+    borderRadius: 5,
+    marginBottom: 15,
+    fontSize: 16,
+  },
   modalButtons: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'space-between',gap:8
   },
   progressBarContainer: {
     width: '70%', // Largura reduzida
